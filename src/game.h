@@ -12,6 +12,9 @@ class Game {
   ~Game();
 
   int Init();
+  void HandleEvents();
+
+  bool Running() const { return running_; }
 
 public:
   const std::string kWindowTitle;
@@ -19,6 +22,8 @@ public:
   const int kWindowH;
 
  private:
+  bool running_ = true;
+
   SDL_Window *window_ = nullptr;
   SDL_Renderer *renderer_ = nullptr;
 };

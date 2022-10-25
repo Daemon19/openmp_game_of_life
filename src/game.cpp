@@ -41,3 +41,13 @@ Game::~Game() {
 
   SDL_Quit();
 }
+
+void Game::HandleEvents() {
+  SDL_Event event;
+
+  while (SDL_PollEvent(&event)) {
+    if (event.type == SDL_QUIT) {
+      running_ = false;
+    }
+  }
+}
