@@ -13,6 +13,7 @@ int main(int argc, char* argv[]) {
 
   while (game.Running()) {
     game.HandleEvents();
+    game.Render();
   }
 
   return 0;

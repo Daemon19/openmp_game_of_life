@@ -13,6 +13,7 @@ class Game {
 
   int Init();
   void HandleEvents();
+  void Render() const;
 
   bool Running() const { return running_; }
 

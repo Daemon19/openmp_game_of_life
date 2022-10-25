@@ -51,3 +51,9 @@ void Game::HandleEvents() {
     }
   }
 }
+
+void Game::Render() const {
+  SDL_SetRenderDrawColor(renderer_, 0, 0, 0, 255);
+  SDL_RenderClear(renderer_);
+  SDL_RenderPresent(renderer_);
+}
