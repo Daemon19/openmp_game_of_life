@@ -5,7 +5,7 @@
 #include "game.h"
 
 int main(int argc, char* argv[]) {
-  Game game("OpenMP Game of Life", 960, 540);
+  Game game("OpenMP Game of Life");
 
   if (game.Init() != 0) {
     return 1;

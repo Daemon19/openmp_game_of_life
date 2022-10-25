@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <omp.h>
 
 #include <iostream>
 #include <string>
@@ -25,8 +26,14 @@ int Game::Init() {
     std::cerr << "Unable to load font: " << TTF_GetError() << "\n";
   }
 
-  window_ = SDL_CreateWindow(kWindowTitle.c_str(), SDL_WINDOWPOS_CENTERED,
-                             SDL_WINDOWPOS_CENTERED, kWindowW, kWindowH, 0);
+  SDL_DisplayMode dm;
+  SDL_GetCurrentDisplayMode(0, &dm);
+  window_w_ = dm.w;
+  window_h_ = dm.h;
+
+  window_ = SDL_CreateWindow(window_title_.c_str(), SDL_WINDOWPOS_CENTERED,
+                             SDL_WINDOWPOS_CENTERED, window_w_, window_h_,
+                             SDL_WINDOW_FULLSCREEN_DESKTOP);
   if (window_ == nullptr) {
     std::cerr << "Unable to create a window: " << SDL_GetError() << "\n";
     SDL_Quit();
@@ -41,6 +48,10 @@ int Game::Init() {
     SDL_Quit();
     return 1;
   }
+
+  int cell_size = 2;
+  grid = Grid(cell_size, window_h_ / cell_size, window_w_ / cell_size);
+  omp_set_num_threads(4);
 
   return 0;
 }
@@ -66,7 +77,9 @@ void Game::HandleEvents() {
   SDL_Event event;
 
   while (SDL_PollEvent(&event)) {
-    if (event.type == SDL_QUIT) {
+    if (event.type == SDL_QUIT ||
+        (event.type == SDL_KEYDOWN &&
+         event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)) {
       running_ = false;
     }
   }

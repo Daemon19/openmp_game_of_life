@@ -1,9 +1,14 @@
 #include "grid.h"
 
-void Grid::Update() {
-  Grid prev_grid = *this;
+#include <SDL.h>
+#include <omp.h>
 
-  for (size_t r = 0; r < Rows(); r++) {
+void Grid::Update() {
+  const Grid prev_grid = *this;
+
+  int r;
+#pragma omp parallel for
+  for (r = 0; r < Rows(); r++) {
     for (size_t c = 0; c < Cols(); c++) {
       int num_neighbours = prev_grid.CountNeighbours_(r, c);
       grid_[r][c] = Grid::ShouldLive_(prev_grid.grid_[r][c], num_neighbours);
@@ -20,13 +25,13 @@ void Grid::Render(SDL_Renderer* renderer) const {
         continue;
       }
 
-      SDL_Rect rect{c * kCellSize, r * kCellSize, kCellSize, kCellSize};
+      SDL_Rect rect{c * cell_size_, r * cell_size_, cell_size_, cell_size_};
       SDL_RenderFillRect(renderer, &rect);
     }
   }
 }
 
-int Grid::CountNeighbours_(int row, int col) {
+int Grid::CountNeighbours_(int row, int col) const {
   int num_neighbours = 0;
 
   for (int roff = -1; roff < 2; roff++) {
