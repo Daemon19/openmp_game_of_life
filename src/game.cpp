@@ -94,4 +94,7 @@ static void RenderText(SDL_Renderer *renderer, const char *text, TTF_Font *font,
   SDL_Texture *text_tex = SDL_CreateTextureFromSurface(renderer, text_surf);
   SDL_Rect dest{0, 0, text_surf->w, text_surf->h};
   SDL_RenderCopy(renderer, text_tex, nullptr, &dest);
+
+  SDL_FreeSurface(text_surf);
+  SDL_DestroyTexture(text_tex);
 }
