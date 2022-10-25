@@ -1,5 +1,7 @@
 #pragma once
+
 #include <SDL.h>
+#include <SDL_ttf.h>
 
 #include <string>
 #include <string_view>
@@ -28,10 +30,20 @@ class Game {
   const int kWindowH;
 
  private:
+  Uint32 GetFps_() const {
+    static Uint32 last_ticks = 0;
+    Uint32 fps = SDL_GetTicks() - last_ticks;
+    last_ticks = SDL_GetTicks();
+    return fps;
+  }
+
+ private:
   bool running_ = true;
 
   SDL_Window *window_ = nullptr;
   SDL_Renderer *renderer_ = nullptr;
 
   Grid grid;
+
+  TTF_Font *font_ = nullptr;
 };
