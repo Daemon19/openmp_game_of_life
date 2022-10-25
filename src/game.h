@@ -30,11 +30,12 @@ class Game {
   const int kWindowH;
 
  private:
-  Uint32 GetFps_() const {
+  int GetFps_() const {
     static Uint32 last_ticks = 0;
-    Uint32 fps = SDL_GetTicks() - last_ticks;
+    Uint32 elapsed = SDL_GetTicks() - last_ticks;
+    float fps = (elapsed > 0) ? 1000.0f / elapsed : 0.0f;
     last_ticks = SDL_GetTicks();
-    return fps;
+    return static_cast<int>(fps);
   }
 
  private:
