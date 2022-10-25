@@ -9,11 +9,15 @@
 class Game {
  public:
   Game(std::string_view title, int width, int height)
-      : kWindowTitle(title), kWindowW(width), kWindowH(height), grid(10, height / 10, width / 10) {}
+      : kWindowTitle(title),
+        kWindowW(width),
+        kWindowH(height),
+        grid(10, height / 10, width / 10) {}
   ~Game();
 
   int Init();
   void HandleEvents();
+  void Update();
   void Render() const;
 
   bool Running() const { return running_; }

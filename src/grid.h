@@ -17,10 +17,15 @@ class Grid {
     }
   }
 
+  void Update();
   void Render(SDL_Renderer *renderer) const;
 
   size_t Rows() const { return grid_.size(); }
   size_t Cols() const { return grid_[0].size(); }
+
+ private:
+  int CountNeighbours_(int row, int col);
+  static bool ShouldLive_(bool live, int num_neighbours);
 
  private:
   const int kCellSize;
